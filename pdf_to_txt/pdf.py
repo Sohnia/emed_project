@@ -11,7 +11,7 @@ import os, re
 import shutil
 from io import StringIO
 from pdfminer.converter import TextConverter, PDFPageAggregator
-from pdfminer.layout import LAParams, LTTextBoxHorizontal, LTRect, LTFigure
+from pdfminer.layout import LAParams, LTTextBoxHorizontal, LTRect, LTFigure, LTTextBoxVertical
 from pdfminer.pdfinterp import PDFResourceManager, process_pdf, PDFPageInterpreter, PDFTextExtractionNotAllowed
 from pdfminer.pdfparser import PDFParser, PDFDocument
 
@@ -141,7 +141,7 @@ def pdf_pages(fp, method=None, snap_method=None, *agrs, **kwargs):
             if snap_method:
                 snap_method(index, page, layout, *agrs, **kwargs)
             for x in layout:
-                if (isinstance(x, LTTextBoxHorizontal)):
+                if isinstance(x, LTTextBoxHorizontal) or isinstance(x, LTTextBoxVertical):
                     if method:
                         method(x.get_text(), index + 1, x.height, *agrs, **kwargs)
 
@@ -226,6 +226,8 @@ def pdf_title(pdf_file, page=1):
     layouts = pdf_page_content(pdf_file, page_num=page)
     tmp = ''
     for layout in layouts:
+        if not isinstance(layout, LTTextBoxHorizontal):
+            continue
         content = layout.get_text().replace('\n','')
         if is_author(content):
             return tmp

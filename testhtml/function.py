@@ -15,6 +15,8 @@ import combine3
 from Crypto.Cipher import DES
 from binascii import b2a_hex, a2b_hex
 
+from pubmed import get_info
+
 
 class MyDESCrypt:  # 自己实现的DES加密类
     def __init__(self, key=''):
@@ -134,3 +136,18 @@ def _save(name, file_stream):
         f.write(chunk)
     f.close()
     return rename
+
+
+def pubmed_parse(request):
+    if request.method == "GET":
+        return render(request, "home.html")
+    if request.method == "POST":
+        id_or_url = str(request.POST.get("pubmed_url_id"))
+        if not id_or_url:
+            return render(request, "home.html", {'msg': '您没有输入url或者id'})
+        info =  get_info(id_or_url)
+        if type(info) == int:
+            return render(request, "home.html", {'msg': '网络出错或者您的输入有误，请您检查'})
+        title, journal, pat_des, res_con = info
+        return render(request, "pubmedPaser.html", {'pubmed_url_id':id_or_url , 'title':title,
+                                                    'journal':journal,'pat_des':pat_des, 'res_con':res_con})

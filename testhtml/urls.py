@@ -20,5 +20,6 @@ from . import function
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', function.home),
-    path('upload.html',function.Upload)
+    path('upload.html',function.Upload),
+    path('pubmedPaser.html',function.pubmed_parse)
 ]

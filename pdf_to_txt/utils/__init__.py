@@ -4,3 +4,4 @@ from .MyUtils import crop_img
 from .MyUtils import is_author
 from .MyUtils import get_files
 from .MyUtils import get_pdf_filename
+from .MyUtils import remove_control_characters

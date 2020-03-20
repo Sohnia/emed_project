@@ -1,4 +1,5 @@
 import os
+import re
 from logging import warning
 import cv2
 import fitz
@@ -113,3 +114,51 @@ def get_pdf_filename(pdf_path):
 
 def get_crop_array(img_file):
     pass
+
+def check_tab(content):
+    """
+    检查是不是表格开头的文字
+    :param content: 必须是小写，例如 'table' 或者 'tab.' 'tab '
+    :return: bool
+    """
+    if len(content)== 3 or not content[3].isalpha():
+        return True
+    elif len(content) == 4 and content[3] == 'l':
+        return True
+    elif len(content) == 5 and content[3] == 'l' and content[4]=='e':
+        return True
+    elif content[3] == 'l' and content[4]=='e' and not content[5].isalpha():
+        return True
+    else:
+        return False
+
+
+def check_fig(content):
+    """
+    检查是不是表格开头的文字
+    :param content: 必须是小写，例如 'figure' 或者 'fig.' 'fig '
+    :return: bool
+    """
+    if len(content)== 3 or not content[3].isalpha():
+        return True
+    elif len(content) == 4 and content[3] == 'u':
+        return True
+    elif len(content) == 5 and content[3] == 'u' and content[4]=='r':
+        return True
+    elif len(content) == 6 and content[3] == 'u' and content[4]=='r' and content[5]=='e':
+        return True
+    elif content[3] == 'u' and content[4]=='r' and content[5]=='e' and not content[6].isalpha():
+        return True
+    else:
+        return False
+
+
+def remove_control_characters(html):
+    def str_to_int(s, default, base=10):
+        if int(s, base) < 0x10000:
+            return chr(int(s, base))
+        return default
+    html = re.sub(u"&#(\d+);?", lambda c: str_to_int(c.group(1), c.group(0)), html)
+    html = re.sub(u"&#[xX]([0-9a-fA-F]+);?", lambda c: str_to_int(c.group(1), c.group(0), base=16), html)
+    html = re.sub(u"[\x00-\x08\x0b\x0e-\x1f\x7f]", "", html)
+    return html

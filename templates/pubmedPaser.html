@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Result for {{ pubmed_url_id }}</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-app">
+    <div class="container">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <p>Bioknow</p>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse navbar-right">
+                <ul class="nav navbar-nav">
+                    <li><a href="http://www.bioknow.net/list.php?pid=4" target="_blank">About</a></li>
+                    <li><a href="http://www.bioknow.net/list.php?pid=4&ty=15" target="_blank">F & Q</a></li>
+                    <li><a title="Version"
+                           data-container="body" data-toggle="popover" data-placement="bottom"
+                           data-content="alpha-20200311">Version</a></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="modal-dialog" style="margin-top: 5%;">
+    <div class="modal-content">
+        <table class="table table-bordered">
+            <caption>Result for pubmed : {{ pubmed_url_id }}</caption>
+            <thead>
+            <tr>
+                <th>item</th>
+                <th>description</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td> title</td>
+                <td>{% autoescape off %}  {{ title }} {% endautoescape %}</td>
+            </tr>
+            <tr>
+                <td> journal information</td>
+                <td>{% autoescape off %}  {{ journal }} {% endautoescape %}</td>
+            </tr>
+            <tr>
+                <td> patients & design</td>
+                <td>{% autoescape off %}  {{ pat_des }} {% endautoescape %}</td>
+            </tr>
+            <tr>
+                <td> results & conclusion</td>
+                <td>{% autoescape off %}  {{ res_con }} {% endautoescape %}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script>
+    $table.bootstrapTable('toggleView');
+</script>
+</html>

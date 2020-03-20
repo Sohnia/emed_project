@@ -9,7 +9,6 @@
 """
 
 import re
-
 def page_handle_text(content, n_page, height, *args, **kwargs):
     '''
     提取每一页的表格或者图片的，接口方法在pdf_pages方法中调用
@@ -20,9 +19,10 @@ def page_handle_text(content, n_page, height, *args, **kwargs):
     :return:
     '''
     # Figure 匹配
-    rc = re.compile(r'^(Figure|Fig|FIGURE)')
+    rc = re.compile(r'^(f\s*i\s*g\s*u\s*r\s*e[^\u4e00-\u9fa5a-zA-Z]|f\s*i\s*g\s*[.])')
     # rc = re.compile('Figure\s*\d+\s*:\s*[\s\S]*|Figure\s*\d+\s*.\s*[\s\S]*|Fig\s*\d+\s*:\s*[\s\S]*|Fig\s*\d+\s*:\s*[\s\S]*')
-    fig_tabel = rc.findall(content.lstrip())
+    content = content.lstrip()
+    fig_tabel = rc.findall(content.lower() + ' ') #加空格为了防止匹配' figure'这样的字符串失败
     if fig_tabel:
         result = content
         try:
@@ -32,9 +32,9 @@ def page_handle_text(content, n_page, height, *args, **kwargs):
             pass
         write_csv(args[0], args[1], n_page, 'figure', height ,result)
     # Table 匹配
-    rc = re.compile('^(Table|Tab|TABLE)')
+    rc = re.compile('^(t\s*a\s*b\s*l\s*e[^\u4e00-\u9fa5a-zA-Z]|t\s*a\s*b\s*[.])')
     # rc = re.compile('Table\s*\d+\s*:\s*|Table\s*\d+\s*.\s*')
-    fig_tabel = rc.findall(content)
+    fig_tabel = rc.findall(content.lower() + ' ')
     if fig_tabel:
         result = content
         try:
